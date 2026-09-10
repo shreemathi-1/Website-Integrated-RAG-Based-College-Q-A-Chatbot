@@ -1,25 +1,26 @@
 # Website RAG Based College Q&A Chatbot
 
-A source-grounded RAG (Retrieval-Augmented Generation) chatbot built for a college website. It answers student, parent, and visitor questions about academics, examinations, departments, campus facilities, and admissions — using only the college's own official documents. If the answer isn't in the source material, it says so instead of guessing.
 
-> Built as a college project to explore how a real institution could deploy a safe, hallucination-resistant chatbot on its public website.
+ A document-based  RAG chatbot integrated into a replica of my college website, using Sentence Transformers (all-MiniLM-L6-v2) for local embeddings, ChromaDB for vector retrieval, FastAPI for the backend API layer, and Groq LLM (openai/gpt-oss-20b) for context-based response generation. It answers student, parent, and visitor questions about academics, examinations, departments, campus facilities, and admissions — using only the college's own official documents. If the answer isn't in the source material, it says so instead of guessing.
+
+> Built as a college project to explore how a real institution could deploy a safe, RAG-based hallucination-resistant chatbot on its public website.
 
 ---
 
 ## Why this exists
 
-Generic LLM chatbots confidently make things up. For a college website, a wrong answer about exam regulations, fees, or hostel rules isn't a minor bug — it's misinformation with real consequences for students.
+Generic LLM chatbots confidently make things up. For a college website, a wrong or guessed answer about exam regulations, fees, or hostel rules isn't a minor bug — it's misinformation with real consequences for students.
 
 This project enforces a strict rule at the architecture level, not just the prompt level: **the model is never allowed to answer from its own general knowledge.** It can only draw from chunks retrieved from the institution's approved documents, and if nothing relevant is found, it returns a fixed fallback response rather than an invented one.
 
 ## Features
 
-* 🔒 **Grounded answers only** — retrieval + similarity threshold + strict system prompt combine to block hallucinated facts
-* 📄 **Source citations** — every answer is returned with the document (and page, for PDFs) it came from
-* ⚡ **Fast, low-cost inference** — local embeddings (no API cost) + Groq's LPU-hosted models for generation
-* 🔁 **Simple re-ingestion workflow** — drop a new PDF/Markdown file into `data/documents/`, rerun one command, done
-* 🧩 **Decoupled architecture** — the RAG backend is a standalone REST API; the same API powers a CLI tool, a chatbot widget, or any future frontend
-* 💬 **Drop-in chat widget** — a floating chatbot bubble (HTML/CSS/JS) that can be embedded into any website with two script tags
+*  **Grounded answers only** — retrieval + similarity threshold + strict system prompt combine to block hallucinated facts
+*  **Source citations** — every answer is returned with the document (and page, for PDFs) it came from
+*  **Fast, low-cost inference** — local embeddings (no API cost) + Groq's LPU-hosted models for generation
+*  **Simple re-ingestion workflow** — drop a new PDF/Markdown file into `data/documents/`, rerun one command, done
+*  **Decoupled architecture** — the RAG backend is a standalone REST API; the same API powers a CLI tool, a chatbot widget, or any future frontend
+*  **Drop-in chat widget** — a floating chatbot bubble (HTML/CSS/JS) that can be embedded into any website with two script tags
 
 ## Tech Stack
 
@@ -231,8 +232,6 @@ All tunables live in `.env` (see `.env.example` for defaults):
 
 * [ ] Chroma is file-based — fine for a single server process; a production deployment with concurrent traffic should move to Postgres + pgvector
 * [ ] No rate limiting on `/api/chat` yet
-* [ ] Some departments' source pages had incomplete public content at extraction time (flagged inline in the relevant `data/documents/` files) — pending manual verification against official PDFs
-* [ ] Google Drive ingestion (pull source PDFs directly from a Drive folder instead of manual copy)
 * [ ] Admin UI for uploading/managing documents without touching the filesystem
 
 ## License
