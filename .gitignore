@@ -1,0 +1,17 @@
+# Environment / secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.egg-info/
+
+# Generated vector store (regenerate with: python -m backend.ingestion.ingest)
+vector_store/chroma_db/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
